@@ -22,3 +22,21 @@ Before each reference can be included in a signed IRBIS OEM package, verify:
 Outcome: **0 approved OEM reference records.** The signed release path
 `releases/oem-reference.bundle` must remain absent, and the app's OEM update
 source must remain disabled until reviewed authorized data exists.
+
+## Private signing workflow (not yet executed)
+
+The release builder and its QA tests now live in the **private** IRBIS source
+repository under `tools/oem/build_release.py` and
+`tools/oem/test_build_release.py`. Nothing is signed or published automatically.
+
+Before building a real package, a reviewer must approve the source documents,
+technical values and rights to redistribute. Compute SHA-256 of the exact
+approved schema-2 JSON; then use the private builder with the approved hash
+and an external private signing key. The signing key must never be copied to
+this public repository.
+
+After signing, independently verify the bundle against the **public key
+embedded in the Android application**, test a successful update and rejection
+of a modified payload, then publish the resulting
+`releases/oem-reference.bundle`. Until then there are **zero** approved OEM
+entries and the update channel stays disabled.
